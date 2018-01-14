@@ -88,9 +88,6 @@ void SetStart(void)
 // 다음 한칸 리턴, 한칸을 가기위해 길을 새로 찾는다
 bool PathFind(int Sx, int Sy, int Ex, int Ey) // int* x, int* y
 {
-	// g값 : 부모의 g값 + 부모로부터 현재까지의 거리(h값과 유사)
-	// h값 : 목적지 까지의 x축기준의 길이 + y축기준의 길이(절대값)
-
 	if (g_openList.empty())
 	{
 		// 오픈이 비었으면 끝
@@ -466,6 +463,7 @@ void AddOpenList(int x, int y, Node* pNode)
 		localNode._x = x;
 		localNode._y = y;
 		//////////////////////////////////////////////////////////////////////////////
+		// 부모 노드의 g값 + 현재 위치에서 목표 노드까지의 각 축의 절대값의 합
 		localNode._g = pNode->_g + (float)abs(pNode->_x - x) + (float)abs(pNode->_y - y);
 		//////////////////////////////////////////////////////////////////////////////
 		localNode._h = (float)abs(g_endPos._x - x) + (float)abs(g_endPos._y - y);
