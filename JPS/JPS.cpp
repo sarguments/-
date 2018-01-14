@@ -74,7 +74,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg;
 
-	///////////////////////// 그리기 초기화 //////////////////////////////////
+	///////////////////////// 그리기 초기화 /////////////////////////////////
 	Init();
 	/////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +88,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	return (int)msg.wParam;
 }
 
-// 초기화
 void Init(void)
 {
 	// 색상 초기화
@@ -374,7 +373,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// 범위 벗어나면 예외
 		if ((xCount < 0) || (xCount >= GRID_NUM * 2) || (yCount < 0) || (yCount >= GRID_NUM))
 		{
-			wprintf(L"out of area\n");
+			wcout << L"out of area" << endl;
 			break;
 		}
 
@@ -402,11 +401,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// 범위 벗어나면 예외
 		if ((xCount < 0) || (xCount >= GRID_NUM * 2) || (yCount < 0) || (yCount >= GRID_NUM))
 		{
-			wprintf(L"out of area\n");
+			wcout << L"out of area" << endl;
 			break;
 		}
-
-		wprintf(L"L DOUBLE click : y : %d, x : %d\n", yCount, xCount);
 
 		g_map[g_startPos._y][g_startPos._x] = nColor::NONE;
 
@@ -432,7 +429,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// 범위 벗어나면 예외
 		if ((xCount < 0) || (xCount >= GRID_NUM * 2) || (yCount < 0) || (yCount >= GRID_NUM))
 		{
-			wprintf(L"out of area\n");
+			wcout << L"out of area" << endl;
 			break;
 		}
 

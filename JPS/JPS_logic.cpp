@@ -149,42 +149,42 @@ eDir CheckDir(Node * pNode)
 {
 	if ((pNode->_parent->_x - pNode->_x > 0) && (pNode->_parent->_y - pNode->_y == 0))
 	{
-		wprintf(L"DIR : LL\n");
+		wcout << L"DIR : LL" << endl;
 		return eDir::LL;
 	}
 	else if ((pNode->_parent->_x - pNode->_x > 0) && (pNode->_parent->_y - pNode->_y > 0))
 	{
-		wprintf(L"DIR : LU\n");
+		wcout << L"DIR : LU" << endl;
 		return eDir::LU;
 	}
 	else if ((pNode->_parent->_x - pNode->_x == 0) && (pNode->_parent->_y - pNode->_y > 0))
 	{
-		wprintf(L"DIR : UU\n");
+		wcout << L"DIR : UU" << endl;
 		return eDir::UU;
 	}
 	else if ((pNode->_parent->_x - pNode->_x < 0) && (pNode->_parent->_y - pNode->_y > 0))
 	{
-		wprintf(L"DIR : RU\n");
+		wcout << L"DIR : RU" << endl;
 		return eDir::RU;
 	}
 	else if ((pNode->_parent->_x - pNode->_x < 0) && (pNode->_parent->_y - pNode->_y == 0))
 	{
-		wprintf(L"DIR : RR\n");
+		wcout << L"DIR : RR" << endl;
 		return eDir::RR;
 	}
 	else if ((pNode->_parent->_x - pNode->_x < 0) && (pNode->_parent->_y - pNode->_y < 0))
 	{
-		wprintf(L"DIR : RD\n");
+		wcout << L"DIR : RD" << endl;
 		return eDir::RD;
 	}
 	else if ((pNode->_parent->_x - pNode->_x == 0) && (pNode->_parent->_y - pNode->_y < 0))
 	{
-		wprintf(L"DIR : DD\n");
+		wcout << L"DIR : DD" << endl;
 		return eDir::DD;
 	}
 	else // if ((pNode->_parent->_x - pNode->_x > 0) && (pNode->_parent->_y - pNode->_y < 0))
 	{
-		wprintf(L"DIR : LD\n");
+		wcout << L"DIR : LD" << endl;
 		return eDir::LD;
 	}
 }
@@ -390,7 +390,7 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	{
 	case eDir::UU:
 	{
-		wprintf(L"recursive climbing : UU  // x : %d, y : %d\n", x, y);
+		wcout << L"recursive climbing : UU  // x : " << x << L", y : " << y << endl;
 		if (
 			((!CheckTile(x - 1, y)) && CheckTile(x - 1, y - 1)) ||
 			((!CheckTile(x + 1, y)) && CheckTile(x + 1, y - 1))
@@ -406,7 +406,7 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	break;
 	case eDir::RR:
 	{
-		wprintf(L"recursive climbing : RR  // x : %d, y : %d\n", x, y);
+		wcout << L"recursive climbing : RR  // x : " << x << L", y : " << y << endl;
 		if (
 			((!CheckTile(x, y - 1)) && CheckTile(x + 1, y - 1)) ||
 			((!CheckTile(x, y + 1)) && CheckTile(x + 1, y + 1))
@@ -422,7 +422,7 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	break;
 	case eDir::DD:
 	{
-		wprintf(L"recursive climbing : DD  // x : %d, y : %d\n", x, y);
+		wcout << L"recursive climbing : DD  // x : " << x << L", y : " << y << endl;
 		if (
 			((!CheckTile(x - 1, y)) && CheckTile(x - 1, y + 1)) ||
 			((!CheckTile(x + 1, y)) && CheckTile(x + 1, y + 1))
@@ -438,7 +438,7 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	break;
 	case eDir::LL:
 	{
-		wprintf(L"recursive climbing : LL  // x : %d, y : %d\n", x, y);
+		wcout << L"recursive climbing : LL  // x : " << x << L", y : " << y << endl;
 		if (
 			((!CheckTile(x, y - 1)) && CheckTile(x - 1, y - 1)) ||
 			((!CheckTile(x, y + 1)) && CheckTile(x - 1, y + 1))
@@ -484,7 +484,7 @@ void AddOpenList(int x, int y, Node* pNode)
 
 		if (iter != g_openList.end())
 		{
-			// 같은거 찾음
+			// 같은것 찾음
 
 			while (1)
 			{
@@ -630,7 +630,7 @@ bool ThrowNode(Node * pNode)
 	{
 	case eDir::LL:
 	{
-		wprintf(L"After DirectionCheck LL Throw\n");
+		wcout << L"After DirectionCheck LL Throw" << endl;
 		ThrowAndMake(pNode->_x - 1, pNode->_y, pNode, eDir::LL);
 
 		if ((!CheckTile(pNode->_x, pNode->_y - 1)) && CheckTile(pNode->_x - 1, pNode->_y - 1))
@@ -646,7 +646,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::LU:
 	{
-		wprintf(L"After DirectionCheck LU Throw\n");
+		wcout << L"After DirectionCheck LU Throw" << endl;
 		ThrowAndMake(pNode->_x - 1, pNode->_y, pNode, eDir::LL);
 		ThrowAndMake(pNode->_x, pNode->_y - 1, pNode, eDir::UU);
 		ThrowAndMake(pNode->_x - 1, pNode->_y - 1, pNode, eDir::LU);
@@ -665,7 +665,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::UU:
 	{
-		wprintf(L"After DirectionCheck UU Throw\n");
+		wcout << L"After DirectionCheck UU Throw" << endl;
 		ThrowAndMake(pNode->_x, pNode->_y - 1, pNode, eDir::UU);
 
 		if ((!CheckTile(pNode->_x - 1, pNode->_y)) && CheckTile(pNode->_x - 1, pNode->_y - 1))
@@ -681,7 +681,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::RU:
 	{
-		wprintf(L"After DirectionCheck RU Throw\n");
+		wcout << L"After DirectionCheck RU Throw" << endl;
 		ThrowAndMake(pNode->_x + 1, pNode->_y, pNode, eDir::RR);
 		ThrowAndMake(pNode->_x, pNode->_y - 1, pNode, eDir::UU);
 		ThrowAndMake(pNode->_x + 1, pNode->_y - 1, pNode, eDir::RU);
@@ -700,7 +700,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::RR:
 	{
-		wprintf(L"After DirectionCheck RR Throw\n");
+		wcout << L"After DirectionCheck RR Throw" << endl;
 		ThrowAndMake(pNode->_x + 1, pNode->_y, pNode, eDir::RR);
 
 		if ((!CheckTile(pNode->_x, pNode->_y - 1)) && CheckTile(pNode->_x + 1, pNode->_y - 1))
@@ -716,7 +716,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::RD:
 	{
-		wprintf(L"After DirectionCheck RD Throw\n");
+		wcout << L"After DirectionCheck RD Throw" << endl;
 		ThrowAndMake(pNode->_x + 1, pNode->_y, pNode, eDir::RR);
 		ThrowAndMake(pNode->_x, pNode->_y + 1, pNode, eDir::DD);
 		ThrowAndMake(pNode->_x + 1, pNode->_y + 1, pNode, eDir::RD);
@@ -735,7 +735,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::DD:
 	{
-		wprintf(L"After DirectionCheck DD Throw\n");
+		wcout << L"After DirectionCheck DD Throw" << endl;
 		ThrowAndMake(pNode->_x, pNode->_y + 1, pNode, eDir::DD);
 
 		if ((!CheckTile(pNode->_x - 1, pNode->_y)) && CheckTile(pNode->_x - 1, pNode->_y + 1))
@@ -751,7 +751,7 @@ bool ThrowNode(Node * pNode)
 	break;
 	case eDir::LD:
 	{
-		wprintf(L"After DirectionCheck LD Throw\n");
+		wcout << L"After DirectionCheck LD Throw" << endl;
 		ThrowAndMake(pNode->_x, pNode->_y + 1, pNode, eDir::DD);
 		ThrowAndMake(pNode->_x - 1, pNode->_y, pNode, eDir::LL);
 		ThrowAndMake(pNode->_x - 1, pNode->_y + 1, pNode, eDir::LD);
