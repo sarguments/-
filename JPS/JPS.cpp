@@ -33,9 +33,21 @@ bool g_isRButtonDown;
 bool g_isErase;
 bool g_isFindEnd;
 
+bool g_isBreOn;
+
 // 마우스 좌표
 int g_mouseX;
 int g_mouseY;
+
+int g_breStartX;
+int g_breStartY;
+int g_breEndX;
+int g_breEndY;
+
+int g_OldbreStartX;
+int g_OldbreStartY;
+int g_OldbreEndX;
+int g_OldbreEndY;
 
 ////////////////////
 int g_randNum;
@@ -47,6 +59,7 @@ void DrawRect(void);
 void DrawLine(void);
 void DrawClear(void);
 void DrawAllClear(void);
+void lineBresenham(int startX, int startY, int destX, int destY);
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -308,6 +321,79 @@ void DrawAllClear(void)
 	InvalidateRect(g_hWnd, NULL, FALSE);
 }
 
+// TODO : 브레즌햄
+void lineBresenham(int startX, int startY, int destX, int destY) 
+{
+	// 기울기
+	int dx = destX - startX;
+	int dy = destY - startY;
+
+	// 직선의 방향에 따라 선이 나아갈 좌표
+	int stepx = (dx > 0) ? 1 : ((dx == 0) ? 0 : -1);
+	int stepy = (dy > 0) ? 1 : ((dy == 0) ? 0 : -1);
+
+	// 기울기 절대값으로
+	dx = abs(dx);
+	dy = abs(dy);
+
+	dx <<= 1;                                     // dx*2 와 같은 의미(비트연산)
+	dy <<=  1;                                    // dy*2 와 같은 의미(비트연산)
+
+	if (g_isBreOn)
+	{
+		g_map[startY][startX] = nColor::WALL;
+	}
+	else
+	{
+		g_map[startY][startX] = nColor::NONE;
+	}
+
+	if (dx > dy) {
+		int fraction = dy - (dx >> 1);     // dx>>1 은 dx/2와 같은 의미(비트연산)
+		while (startX != destX) {
+			if (fraction >= 0) {
+				startY += stepy;
+				fraction -= dx;                 // fraction -= 2*dx 과 같은 의미
+			}
+			startX += stepx;
+			fraction += dy;                     // fraction -= 2*dy 과 같은 의미
+
+			/////////////////////////////
+			if (g_isBreOn)
+			{
+				g_map[startY][startX] = nColor::WALL;
+			}
+			else
+			{
+				g_map[startY][startX] = nColor::NONE;
+			}
+			/////////////////////////////
+		}
+	}
+	else {
+		int fraction = dx - (dy >> 1);
+		while (startY != destY) {
+			if (fraction >= 0) {
+				startX += stepx;
+				fraction -= dy;
+			}
+			startY += stepy;
+			fraction += dx;
+
+			/////////////////////////////
+			if (g_isBreOn)
+			{
+				g_map[startY][startX] = nColor::WALL;
+			}
+			else
+			{
+				g_map[startY][startX] = nColor::NONE;
+			}
+			/////////////////////////////
+		}
+	}
+}
+
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
 	WNDCLASSEXW wcex;
@@ -417,6 +503,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(g_hWnd, NULL, FALSE);
 	}
 	break;
+	// TODO : 브레즌햄 테스트
 	case WM_LBUTTONDOWN:
 	{
 		wcout << L"L button DOWN" << endl;
@@ -443,17 +530,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		if (g_map[yCount][xCount] == nColor::WALL)
-		{
-			g_map[yCount][xCount] = nColor::NONE;
-			g_isErase = true;
-		}
-		else
-		{
-			g_map[yCount][xCount] = nColor::WALL;
-		}
+		//if (g_map[yCount][xCount] == nColor::WALL)
+		//{
+		//	g_map[yCount][xCount] = nColor::NONE;
+		//	g_isErase = true;
+		//}
+		//else
+		//{
+		//	g_map[yCount][xCount] = nColor::WALL;
+		//}
 
-		InvalidateRect(g_hWnd, NULL, FALSE);
+		g_breStartX = xCount;
+		g_breStartY = yCount;
+
+		//lineBresenham(4, 4, 14, 10);
+
+		//InvalidateRect(g_hWnd, NULL, FALSE);
 	}
 	break;
 	case WM_LBUTTONUP:
@@ -484,19 +576,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		if (g_map[yCount][xCount] == nColor::WALL &&
-			g_isErase == true)
-		{
-			g_map[yCount][xCount] = nColor::NONE;
-		}
-		else if (g_isErase == false)
-		{
-			g_map[yCount][xCount] = nColor::WALL;
-		}
-		else
-		{
-			break;
-		}
+		//if (g_map[yCount][xCount] == nColor::WALL &&
+		//	g_isErase == true)
+		//{
+		//	g_map[yCount][xCount] = nColor::NONE;
+		//}
+		//else if (g_isErase == false)
+		//{
+		//	g_map[yCount][xCount] = nColor::WALL;
+		//}
+		//else
+		//{
+		//	break;
+		//}
+		
+		g_breEndX = xCount;
+		g_breEndY = yCount;
+
+		g_OldbreStartX = g_breStartX;
+		g_OldbreStartY = g_breStartY;
+		g_OldbreEndX = g_breEndX;
+		g_OldbreEndY = g_breEndY;
+
+		g_isBreOn = true;
+		lineBresenham(g_OldbreStartX, g_OldbreStartY, g_OldbreEndX, g_OldbreEndY);
 
 		InvalidateRect(g_hWnd, NULL, FALSE);
 	}
