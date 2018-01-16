@@ -50,12 +50,15 @@ extern nColor g_throwColor;
 extern HBRUSH g_colorArr[10];
 extern int g_randNum;
 
+#define CHECKRANGE(x,y) (((x) < 0 || (x) > GRID_NUM * 2 - 1 || (y) < 0 || (y) > GRID_NUM - 1) ? 0 : 1)
+#define CHECKTILE(x,y) (((g_map[(y)][(x)] == nColor::WALL) || (!CHECKRANGE((x), (y)))) ? 0 : 1)
+
 void JPS_Find(void);
 void SetStart(void);
 bool PathFind(int Sx, int Sy, int Ex, int Ey);
 
-bool CheckTile(int X, int Y);
-bool CheckRange(int X, int Y);
+//bool CHECKTILE(int X, int Y);
+//bool CHECKRANGE(int X, int Y);
 eDir CheckDir(Node* pNode);
 
 /////////

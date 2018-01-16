@@ -525,7 +525,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// 시작, 끝점은 벽 그리기에서 제외
 		if (g_map[yCount][xCount] == nColor::START ||
 			g_map[yCount][xCount] == nColor::END ||
-			!CheckRange(xCount, yCount))
+			!CHECKRANGE(xCount, yCount))
 		{
 			break;
 		}
@@ -553,6 +553,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		wcout << L"L button up" << endl;
 		g_isLButtonDown = false;
 		g_isErase = false;
+		g_isBreOn = false;
+
+		g_OldbreStartX = -1;
+		g_OldbreStartY = -1;
+		g_OldbreEndX = -1;
+		g_OldbreEndY = -1;
 	}
 	break;
 	case WM_MOUSEMOVE:
@@ -571,7 +577,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// 시작, 끝점은 벽 그리기에서 제외
 		if (g_map[yCount][xCount] == nColor::START ||
 			g_map[yCount][xCount] == nColor::END ||
-			!CheckRange(xCount, yCount))
+			!CHECKRANGE(xCount, yCount))
 		{
 			break;
 		}
@@ -593,13 +599,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		g_breEndX = xCount;
 		g_breEndY = yCount;
 
-		g_OldbreStartX = g_breStartX;
-		g_OldbreStartY = g_breStartY;
-		g_OldbreEndX = g_breEndX;
-		g_OldbreEndY = g_breEndY;
+		if (g_isBreOn == true &&
+			(g_breStartX != g_OldbreStartX ||
+			g_OldbreStartY != g_breStartY ||
+			g_OldbreEndX != g_breEndX ||
+			g_OldbreEndY != g_breEndY)) 
+		{
+			g_isBreOn = false;
+			lineBresenham(g_OldbreStartX, g_OldbreStartY, g_OldbreEndX, g_OldbreEndY);
+
+			g_OldbreStartX = g_breStartX;
+			g_OldbreStartY = g_breStartY;
+			g_OldbreEndX = g_breEndX;
+			g_OldbreEndY = g_breEndY;
+		}
 
 		g_isBreOn = true;
-		lineBresenham(g_OldbreStartX, g_OldbreStartY, g_OldbreEndX, g_OldbreEndY);
+		lineBresenham(g_breStartX, g_breStartY, g_breEndX, g_breEndY);
 
 		InvalidateRect(g_hWnd, NULL, FALSE);
 	}

@@ -2,26 +2,27 @@
 #include "hoxy_Header.h"
 #include "JPS_logic.h"
 
-bool CheckTile(int X, int Y)
-{
-	if (g_map[Y][X] == nColor::WALL ||
-		!CheckRange(X, Y))
-	{
-		return false;
-	}
+// TODO : 매크로 함수화
+//bool CHECKTILE(int X, int Y)
+//{
+//	if (g_map[Y][X] == nColor::WALL ||
+//		!CHECKRANGE(X, Y))
+//	{
+//		return false;
+//	}
+//
+//	return true;
+//}
 
-	return true;
-}
-
-bool CheckRange(int X, int Y)
-{
-	if (X < 0 || X > GRID_NUM * 2 - 1 || Y < 0 || Y > GRID_NUM - 1)
-	{
-		return false;
-	}
-
-	return true;
-}
+//bool CHECKRANGE(int X, int Y)
+//{
+//	if (X < 0 || X > GRID_NUM * 2 - 1 || Y < 0 || Y > GRID_NUM - 1)
+//	{
+//		return false;
+//	}
+//
+//	return true;
+//}
 
 void ReleaseList(void)
 {
@@ -189,7 +190,7 @@ eDir CheckDir(Node * pNode)
 bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 {
 	// 맵 끝이거나 벽을 만나면 빠져나감
-	if (!CheckTile(x, y))
+	if (!CHECKTILE(x, y))
 	{
 		return false;
 	}
@@ -218,8 +219,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::LL:
 	{
 		if (
-			((!CheckTile(x, y - 1)) && CheckTile(x - 1, y - 1)) ||
-			((!CheckTile(x, y + 1)) && CheckTile(x - 1, y + 1))
+			((!CHECKTILE(x, y - 1)) && CHECKTILE(x - 1, y - 1)) ||
+			((!CHECKTILE(x, y + 1)) && CHECKTILE(x - 1, y + 1))
 			)
 		{
 			AddOpenList(x, y, pNode);
@@ -234,8 +235,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::LU:
 	{
 		if (
-			(!CheckTile(x + 1, y) && CheckTile(x + 1, y - 1)) ||
-			(!CheckTile(x, y + 1) && CheckTile(x - 1, y + 1)) ||
+			(!CHECKTILE(x + 1, y) && CHECKTILE(x + 1, y - 1)) ||
+			(!CHECKTILE(x, y + 1) && CHECKTILE(x - 1, y + 1)) ||
 			(ClimbingRecursive(x, y - 1, pNode, eDir::UU)) ||
 			(ClimbingRecursive(x - 1, y, pNode, eDir::LL))
 			)
@@ -252,8 +253,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::UU:
 	{
 		if (
-			((!CheckTile(x - 1, y)) && CheckTile(x - 1, y - 1)) ||
-			((!CheckTile(x + 1, y)) && CheckTile(x + 1, y - 1))
+			((!CHECKTILE(x - 1, y)) && CHECKTILE(x - 1, y - 1)) ||
+			((!CHECKTILE(x + 1, y)) && CHECKTILE(x + 1, y - 1))
 			)
 		{
 			AddOpenList(x, y, pNode);
@@ -268,8 +269,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::RU:
 	{
 		if (
-			(!CheckTile(x - 1, y) && CheckTile(x - 1, y - 1)) ||
-			(!CheckTile(x, y + 1) && CheckTile(x + 1, y + 1)) ||
+			(!CHECKTILE(x - 1, y) && CHECKTILE(x - 1, y - 1)) ||
+			(!CHECKTILE(x, y + 1) && CHECKTILE(x + 1, y + 1)) ||
 			(ClimbingRecursive(x, y - 1, pNode, eDir::UU)) ||
 			(ClimbingRecursive(x + 1, y, pNode, eDir::RR))
 			)
@@ -286,8 +287,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::RR:
 	{
 		if (
-			((!CheckTile(x, y - 1)) && CheckTile(x + 1, y - 1)) ||
-			((!CheckTile(x, y + 1)) && CheckTile(x + 1, y + 1))
+			((!CHECKTILE(x, y - 1)) && CHECKTILE(x + 1, y - 1)) ||
+			((!CHECKTILE(x, y + 1)) && CHECKTILE(x + 1, y + 1))
 			)
 		{
 			AddOpenList(x, y, pNode);
@@ -302,8 +303,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::RD:
 	{
 		if (
-			(!CheckTile(x - 1, y) && CheckTile(x - 1, y + 1)) ||
-			(!CheckTile(x, y - 1) && CheckTile(x + 1, y - 1)) ||
+			(!CHECKTILE(x - 1, y) && CHECKTILE(x - 1, y + 1)) ||
+			(!CHECKTILE(x, y - 1) && CHECKTILE(x + 1, y - 1)) ||
 			(ClimbingRecursive(x + 1, y, pNode, eDir::RR)) ||
 			(ClimbingRecursive(x, y + 1, pNode, eDir::DD))
 			)
@@ -320,8 +321,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::DD:
 	{
 		if (
-			((!CheckTile(x - 1, y)) && CheckTile(x - 1, y + 1)) ||
-			((!CheckTile(x + 1, y)) && CheckTile(x + 1, y + 1))
+			((!CHECKTILE(x - 1, y)) && CHECKTILE(x - 1, y + 1)) ||
+			((!CHECKTILE(x + 1, y)) && CHECKTILE(x + 1, y + 1))
 			)
 		{
 			AddOpenList(x, y, pNode);
@@ -336,8 +337,8 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 	case eDir::LD:
 	{
 		if (
-			(!CheckTile(x + 1, y) && CheckTile(x + 1, y + 1)) ||
-			(!CheckTile(x, y - 1) && CheckTile(x - 1, y - 1)) ||
+			(!CHECKTILE(x + 1, y) && CHECKTILE(x + 1, y + 1)) ||
+			(!CHECKTILE(x, y - 1) && CHECKTILE(x - 1, y - 1)) ||
 			(ClimbingRecursive(x - 1, y, pNode, eDir::LL)) ||
 			(ClimbingRecursive(x, y + 1, pNode, eDir::DD))
 			)
@@ -360,7 +361,7 @@ bool ThrowAndMake(int x, int y, Node* pNode, eDir dir)
 bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 {
 	// 맵 끝이거나 벽을 만나면 빠져나감
-	if (!CheckTile(x, y))
+	if (!CHECKTILE(x, y))
 	{
 		return false;
 	}
@@ -389,8 +390,8 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	{
 		wcout << L"recursive climbing : UU  // x : " << x << L", y : " << y << endl;
 		if (
-			((!CheckTile(x - 1, y)) && CheckTile(x - 1, y - 1)) ||
-			((!CheckTile(x + 1, y)) && CheckTile(x + 1, y - 1))
+			((!CHECKTILE(x - 1, y)) && CHECKTILE(x - 1, y - 1)) ||
+			((!CHECKTILE(x + 1, y)) && CHECKTILE(x + 1, y - 1))
 			)
 		{
 			return true;
@@ -405,8 +406,8 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	{
 		wcout << L"recursive climbing : RR  // x : " << x << L", y : " << y << endl;
 		if (
-			((!CheckTile(x, y - 1)) && CheckTile(x + 1, y - 1)) ||
-			((!CheckTile(x, y + 1)) && CheckTile(x + 1, y + 1))
+			((!CHECKTILE(x, y - 1)) && CHECKTILE(x + 1, y - 1)) ||
+			((!CHECKTILE(x, y + 1)) && CHECKTILE(x + 1, y + 1))
 			)
 		{
 			return true;
@@ -421,8 +422,8 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	{
 		wcout << L"recursive climbing : DD  // x : " << x << L", y : " << y << endl;
 		if (
-			((!CheckTile(x - 1, y)) && CheckTile(x - 1, y + 1)) ||
-			((!CheckTile(x + 1, y)) && CheckTile(x + 1, y + 1))
+			((!CHECKTILE(x - 1, y)) && CHECKTILE(x - 1, y + 1)) ||
+			((!CHECKTILE(x + 1, y)) && CHECKTILE(x + 1, y + 1))
 			)
 		{
 			return true;
@@ -437,8 +438,8 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 	{
 		wcout << L"recursive climbing : LL  // x : " << x << L", y : " << y << endl;
 		if (
-			((!CheckTile(x, y - 1)) && CheckTile(x - 1, y - 1)) ||
-			((!CheckTile(x, y + 1)) && CheckTile(x - 1, y + 1))
+			((!CHECKTILE(x, y - 1)) && CHECKTILE(x - 1, y - 1)) ||
+			((!CHECKTILE(x, y + 1)) && CHECKTILE(x - 1, y + 1))
 			)
 		{
 			return true;
@@ -456,7 +457,7 @@ bool ClimbingRecursive(int x, int y, Node* pNode, eDir dir)
 
 void AddOpenList(int x, int y, Node* pNode)
 {
-	if (CheckTile(x, y))
+	if (CHECKTILE(x, y))
 	{
 		Node localNode;
 		localNode._parent = pNode;
@@ -631,12 +632,12 @@ bool ThrowNode(Node * pNode)
 		wcout << L"After DirectionCheck LL Throw" << endl;
 		ThrowAndMake(pNode->_x - 1, pNode->_y, pNode, eDir::LL);
 
-		if ((!CheckTile(pNode->_x, pNode->_y - 1)) && CheckTile(pNode->_x - 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y - 1)) && CHECKTILE(pNode->_x - 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y - 1, pNode, eDir::LU);
 		}
 
-		if ((!CheckTile(pNode->_x, pNode->_y + 1)) && CheckTile(pNode->_x - 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y + 1)) && CHECKTILE(pNode->_x - 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y + 1, pNode, eDir::LD);
 		}
@@ -650,12 +651,12 @@ bool ThrowNode(Node * pNode)
 		ThrowAndMake(pNode->_x - 1, pNode->_y - 1, pNode, eDir::LU);
 
 		//
-		if ((!CheckTile(pNode->_x + 1, pNode->_y)) && CheckTile(pNode->_x + 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x + 1, pNode->_y)) && CHECKTILE(pNode->_x + 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y - 1, pNode, eDir::RU);
 		}
 
-		if ((!CheckTile(pNode->_x, pNode->_y + 1)) && CheckTile(pNode->_x - 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y + 1)) && CHECKTILE(pNode->_x - 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y + 1, pNode, eDir::LD);
 		}
@@ -666,12 +667,12 @@ bool ThrowNode(Node * pNode)
 		wcout << L"After DirectionCheck UU Throw" << endl;
 		ThrowAndMake(pNode->_x, pNode->_y - 1, pNode, eDir::UU);
 
-		if ((!CheckTile(pNode->_x - 1, pNode->_y)) && CheckTile(pNode->_x - 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x - 1, pNode->_y)) && CHECKTILE(pNode->_x - 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y - 1, pNode, eDir::LU);
 		}
 
-		if ((!CheckTile(pNode->_x + 1, pNode->_y)) && CheckTile(pNode->_x + 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x + 1, pNode->_y)) && CHECKTILE(pNode->_x + 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y - 1, pNode, eDir::RU);
 		}
@@ -685,12 +686,12 @@ bool ThrowNode(Node * pNode)
 		ThrowAndMake(pNode->_x + 1, pNode->_y - 1, pNode, eDir::RU);
 
 		//
-		if ((!CheckTile(pNode->_x - 1, pNode->_y)) && CheckTile(pNode->_x - 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x - 1, pNode->_y)) && CHECKTILE(pNode->_x - 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y - 1, pNode, eDir::LU);
 		}
 
-		if ((!CheckTile(pNode->_x, pNode->_y + 1)) && CheckTile(pNode->_x + 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y + 1)) && CHECKTILE(pNode->_x + 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y + 1, pNode, eDir::RD);
 		}
@@ -701,12 +702,12 @@ bool ThrowNode(Node * pNode)
 		wcout << L"After DirectionCheck RR Throw" << endl;
 		ThrowAndMake(pNode->_x + 1, pNode->_y, pNode, eDir::RR);
 
-		if ((!CheckTile(pNode->_x, pNode->_y - 1)) && CheckTile(pNode->_x + 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y - 1)) && CHECKTILE(pNode->_x + 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y - 1, pNode, eDir::RU);
 		}
 
-		if ((!CheckTile(pNode->_x, pNode->_y + 1)) && CheckTile(pNode->_x + 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y + 1)) && CHECKTILE(pNode->_x + 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y + 1, pNode, eDir::RD);
 		}
@@ -720,12 +721,12 @@ bool ThrowNode(Node * pNode)
 		ThrowAndMake(pNode->_x + 1, pNode->_y + 1, pNode, eDir::RD);
 
 		//
-		if ((!CheckTile(pNode->_x - 1, pNode->_y)) && CheckTile(pNode->_x - 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x - 1, pNode->_y)) && CHECKTILE(pNode->_x - 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y + 1, pNode, eDir::LD);
 		}
 
-		if ((!CheckTile(pNode->_x, pNode->_y - 1)) && CheckTile(pNode->_x + 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y - 1)) && CHECKTILE(pNode->_x + 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y - 1, pNode, eDir::RU);
 		}
@@ -736,12 +737,12 @@ bool ThrowNode(Node * pNode)
 		wcout << L"After DirectionCheck DD Throw" << endl;
 		ThrowAndMake(pNode->_x, pNode->_y + 1, pNode, eDir::DD);
 
-		if ((!CheckTile(pNode->_x - 1, pNode->_y)) && CheckTile(pNode->_x - 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x - 1, pNode->_y)) && CHECKTILE(pNode->_x - 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y + 1, pNode, eDir::LD);
 		}
 
-		if ((!CheckTile(pNode->_x + 1, pNode->_y)) && CheckTile(pNode->_x + 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x + 1, pNode->_y)) && CHECKTILE(pNode->_x + 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y + 1, pNode, eDir::RD);
 		}
@@ -755,12 +756,12 @@ bool ThrowNode(Node * pNode)
 		ThrowAndMake(pNode->_x - 1, pNode->_y + 1, pNode, eDir::LD);
 
 		//
-		if ((!CheckTile(pNode->_x, pNode->_y - 1)) && CheckTile(pNode->_x - 1, pNode->_y - 1))
+		if ((!CHECKTILE(pNode->_x, pNode->_y - 1)) && CHECKTILE(pNode->_x - 1, pNode->_y - 1))
 		{
 			ThrowAndMake(pNode->_x - 1, pNode->_y - 1, pNode, eDir::LU);
 		}
 
-		if ((!CheckTile(pNode->_x + 1, pNode->_y)) && CheckTile(pNode->_x + 1, pNode->_y + 1))
+		if ((!CHECKTILE(pNode->_x + 1, pNode->_y)) && CHECKTILE(pNode->_x + 1, pNode->_y + 1))
 		{
 			ThrowAndMake(pNode->_x + 1, pNode->_y + 1, pNode, eDir::RD);
 		}
